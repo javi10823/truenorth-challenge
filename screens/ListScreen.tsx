@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,14 +19,27 @@ import axios from 'axios';
  * 💯 Handle loading and error scenarios, always
  */
 
-export default function ListScreen() {
-  const data = mockData.data;
+export default function ListScreen({navigation}) {
+  const [data, setData] = useState<any>([]);
+
+  const fetchUser = async () => {
+    const baseUrl = 'https://api.coincap.io/v2/';
+    const url = `${baseUrl}assets`;
+    const response: any = await axios.get(url).catch(e => console.log(e));
+    console.log(response.data);
+    await setData(response.data.data);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   const ListItem = ({item}) => {
     return (
       <View style={styles.itemContainer}>
         {/* ToDo: Link to `DetailScreen` passing `id` as parameter */}
-        <TouchableWithoutFeedback onPress={() => alert('Detail')}>
+        <TouchableWithoutFeedback
+          onPress={() => navigation.navigate('Detail', {id: item.id})}>
           <View>
             <View>
               <Text>{item.symbol}</Text>

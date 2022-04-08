@@ -12,7 +12,7 @@ import {Alert, StyleSheet, Text, View, Button} from 'react-native';
  * 💯 Handle loading and error scenarios, always
  */
 
-export default function ListScreen() {
+export default function ListScreen({navigation}) {
   /* ToDo: Get the id param from the route */
   const id = 'bitcoin';
   const item = mockData.data;
@@ -31,7 +31,10 @@ export default function ListScreen() {
           <Text>Max Supply {item.maxSupply}</Text>
           <Text>Market Cap Usd {item.marketCapUsd}</Text>
 
-          <Button title="My Wallet" onPress={() => Alert.alert('Wallet')} />
+          <Button
+            title="My Wallet"
+            onPress={() => navigation.navigate('Wallet')}
+          />
         </View>
       ) : (
         <Text>Loading</Text>
