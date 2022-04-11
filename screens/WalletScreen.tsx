@@ -1,60 +1,73 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {TabBar} from '../components/ui';
 
 /**
- * ToDo: Create a Bottom Tab Navigation for: Account and Partners sections
  * ToDo: In the Account tab, print the name submited in the Sign-In form
  * ToDo: In the Partners tab, manually list some apps you create
  *
  * 💯 Published apps where you been involved is great plus
  */
 
-export default function WalletScreen() {
-  return (
-    <View>
-      <AccountSection />
-      <PartnersSection />
-    </View>
-  );
-}
+const Tab = createBottomTabNavigator();
 
-function AccountSection() {
+const WalletScreen = () => {
   return (
-    <View style={styles.container}>
-      <Image style={styles.illustration} source={require('../assets/finish-illustration.png')} />
-      <Text style={styles.title}>Hello, $contextName</Text>
-      <Text>Glad you are here,</Text>
-      <Text>hope to see you soon.</Text>
-    </View>
+    <Tab.Navigator tabBar={TabBar} screenOptions={{headerShown: false}}>
+      <Tab.Screen name="Account" component={AccountSection} />
+      <Tab.Screen name="Partners" component={PartnersSection} />
+    </Tab.Navigator>
   );
-}
+};
 
-function PartnersSection() {
+const AccountSection = () => (
+  <View style={styles.container}>
+    <Image
+      style={styles.illustration}
+      source={require('../assets/finish-illustration.png')}
+    />
+    <Text style={styles.title}>Hello, $contextName</Text>
+    <Text style={styles.subtitle}>Glad you’re here. Hope to see you soon!</Text>
+  </View>
+);
+
+const PartnersSection = () => {
   const partnerList = [
-    { name: 'App1', url: '#', comments: 'Description of the application and what you did.' },
-    { name: 'App2', url: '#', comments: 'Description of the application and what you did.' },
-    { name: 'App3', url: '#', comments: 'Description of the application and what you did.' },
+    {
+      name: 'App1',
+      url: '#',
+      comments: 'Description of the application and what you did.',
+    },
+    {
+      name: 'App2',
+      url: '#',
+      comments: 'Description of the application and what you did.',
+    },
+    {
+      name: 'App3',
+      url: '#',
+      comments: 'Description of the application and what you did.',
+    },
   ];
 
-  const ListItem = ({ item }) => {
-    return (
-      <View style={styles.itemContainer}>
-        <Text>{item.name}</Text>
-        <Text>{item.comments}</Text>
-        <Text>URL: {item.url}</Text>
-      </View>
-    );
-  };
+  const ListItem = ({item}) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.comments}>{item.comments}</Text>
+      <Text style={styles.text}>
+        URL: <Text style={{color: '#6B7280'}}>{item.url}</Text>
+      </Text>
+    </View>
+  );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.profileContainer}>
       <Text style={styles.title}>Partners</Text>
-      <Text>Some apps I was involved:</Text>
+      <Text style={styles.text}>Here are some apps I was involved in:</Text>
       {partnerList && partnerList.length > 0 ? (
-        <ScrollView>
-          {partnerList.map((item) => (
+        <ScrollView style={{marginTop: 24}}>
+          {partnerList.map(item => (
             <ListItem key={item.name} item={item} />
           ))}
         </ScrollView>
@@ -63,27 +76,61 @@ function PartnersSection() {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 172,
+  },
+  profileContainer: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#F8F8FA',
+    alignItems: 'center',
+    paddingTop: 24,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 12,
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 24,
+  },
+  subtitle: {
+    fontSize: 14,
+    textAlign: 'center',
+    color: '#0A132C',
   },
   illustration: {
-    width: 256,
-    height: 160,
+    width: 354,
+    height: 139,
   },
   itemContainer: {
     display: 'flex',
     backgroundColor: '#fff',
-    marginVertical: 6,
-    padding: 8,
+    padding: 20,
+    marginBottom: 12,
+    marginHorizontal: 30,
+    borderRadius: 8,
+  },
+
+  itemName: {
+    color: '#019FB5',
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 12,
+  },
+  comments: {
+    fontSize: 16,
+    color: '#0A132C',
+    marginBottom: 24,
+  },
+  text: {
+    fontSize: 16,
+    color: '#0A132C',
   },
 });
+
+export default WalletScreen;

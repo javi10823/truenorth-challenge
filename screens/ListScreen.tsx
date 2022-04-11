@@ -4,7 +4,8 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  ScrollView,
+  ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import axios from 'axios';
 
@@ -26,7 +27,6 @@ export default function ListScreen({navigation}) {
     const baseUrl = 'https://api.coincap.io/v2/';
     const url = `${baseUrl}assets`;
     const response: any = await axios.get(url).catch(e => console.log(e));
-    console.log(response.data);
     await setData(response.data.data);
   };
 
@@ -34,39 +34,72 @@ export default function ListScreen({navigation}) {
     fetchUser();
   }, []);
 
-  const ListItem = ({item}) => {
-    return (
-      <View style={styles.itemContainer}>
-        {/* ToDo: Link to `DetailScreen` passing `id` as parameter */}
-        <TouchableWithoutFeedback
-          onPress={() => navigation.navigate('Detail', {id: item.id})}>
-          <View>
-            <View>
-              <Text>{item.symbol}</Text>
-              <Text>#{item.rank}</Text>
-            </View>
-            <View>
-              <Text>{item.name}</Text>
-              {/* 💯  In this execercise you can round numbers without a library */}
-              <Text>USD {item.priceUsd}</Text>
-              <Text>Last24 {item.changePercent24Hr}</Text>
+  const ListItem = ({item}) => (
+    <View
+      style={[
+        styles.itemContainer,
+        {
+          marginVertical: 10,
+        },
+      ]}>
+      <TouchableWithoutFeedback
+        onPress={navigation.navigate.bind(null, 'Detail', {id: item.id})}>
+        <View>
+          <View style={styles.nameRow}>
+            <Text style={styles.symbol}>
+              {item.symbol} - <Text style={styles.name}>{item.name}</Text>
+            </Text>
+            <Text style={styles.rank}>#{item.rank}</Text>
+          </View>
+          <View style={styles.priceRow}>
+            {/* 💯  In this execercise you can round numbers without a library */}
+            <Text style={styles.price}>
+              $ {Number(item.priceUsd).toFixed(2)}{' '}
+              <Text style={styles.currency}>USD</Text>
+            </Text>
+            <View
+              style={[
+                styles.percentChangeCell,
+                {
+                  backgroundColor:
+                    Number(item.changePercent24Hr) < 0 ? '#FDDCDC' : '#D1FAE5',
+                },
+              ]}>
+              <Text
+                style={[
+                  styles.percent,
+                  {
+                    color:
+                      Number(item.changePercent24Hr) < 0
+                        ? '#A50606'
+                        : '#065F46',
+                  },
+                ]}>
+                {Number(item.changePercent24Hr) < 0
+                  ? -Number(item.changePercent24Hr).toFixed(2)
+                  : Number(item.changePercent24Hr).toFixed(2)}
+                %
+              </Text>
             </View>
           </View>
-        </TouchableWithoutFeedback>
-      </View>
-    );
-  };
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       {data && data.length > 0 ? (
-        <ScrollView>
-          {data.map(item => (
-            <ListItem key={item.id} item={item} />
-          ))}
-        </ScrollView>
+        <FlatList
+          style={{
+            paddingHorizontal: 30,
+          }}
+          data={data}
+          keyExtractor={({id}) => id}
+          renderItem={({item}) => <ListItem key={item.id} item={item} />}
+        />
       ) : (
-        <Text>Loading</Text>
+        <ActivityIndicator style={styles.loading} />
       )}
     </View>
   );
@@ -75,64 +108,66 @@ export default function ListScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 8,
-  },
-  illustration: {
-    width: 50,
-    height: 50,
+    paddingTop: 14,
   },
   itemContainer: {
     display: 'flex',
     backgroundColor: '#fff',
-    marginVertical: 6,
-    padding: 8,
+    paddingTop: 20,
+    paddingBottom: 18,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  symbol: {
+    fontWeight: '700',
+    fontSize: 18,
+    color: '#0A132C',
+  },
+  name: {
+    fontWeight: '400',
+    fontSize: 16,
+    color: '#0A132C',
+  },
+  rank: {
+    fontWeight: '500',
+    fontSize: 14,
+    color: '#6B7280',
+    paddingRight: 13,
+  },
+  priceRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginTop: 13,
+  },
+  price: {
+    color: '#019FB5',
+    fontSize: 24,
+    lineHeight: 32,
+    fontWeight: '600',
+  },
+  currency: {
+    fontWeight: '500',
+    fontSize: 14,
+    color: '#6B7280',
+  },
+  percentChangeCell: {
+    borderRadius: 12,
+    height: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: 15,
+    paddingRight: 10,
+  },
+  percent: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  loading: {
+    alignSelf: 'center',
   },
 });
-
-const mockData = {
-  data: [
-    {
-      id: 'bitcoin',
-      rank: '1',
-      symbol: 'BTC',
-      name: 'Bitcoin',
-      supply: '18699443.0000000000000000',
-      maxSupply: '21000000.0000000000000000',
-      marketCapUsd: '1015247880827.1353075029297279',
-      volumeUsd24Hr: '29060906818.4485396840769794',
-      priceUsd: '54292.9477004815227653',
-      changePercent24Hr: '-6.5116870123483020',
-      vwap24Hr: '55997.2133851391811930',
-      explorer: 'https://blockchain.info/',
-    },
-    {
-      id: 'ethereum',
-      rank: '2',
-      symbol: 'ETH',
-      name: 'Ethereum',
-      supply: '115737290.0615000000000000',
-      maxSupply: null,
-      marketCapUsd: '386628811693.0624014790470075',
-      volumeUsd24Hr: '31432181076.4195139481844396',
-      priceUsd: '3340.5725284186038137',
-      changePercent24Hr: '1.1359859562693353',
-      vwap24Hr: '3352.4239757346908390',
-      explorer: 'https://etherscan.io/',
-    },
-    {
-      id: 'binance-coin',
-      rank: '3',
-      symbol: 'BNB',
-      name: 'Binance Coin',
-      supply: '153432897.0000000000000000',
-      maxSupply: '170532785.0000000000000000',
-      marketCapUsd: '96293024995.0299971487645969',
-      volumeUsd24Hr: '3662164344.1704711620723615',
-      priceUsd: '627.5904768651405777',
-      changePercent24Hr: '-7.3482646947958675',
-      vwap24Hr: '650.8946548822847374',
-      explorer:
-        'https://etherscan.io/token/0xB8c77482e45F1F44dE1745F52C74426C631bDD52',
-    },
-  ],
-};
