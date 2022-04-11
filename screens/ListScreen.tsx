@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
-import axios from 'axios';
+import {fetchAssets} from '../api';
 
 /**
  * ToDo: Feed the list using fetching data from a RESTful API
@@ -23,15 +23,13 @@ import axios from 'axios';
 export default function ListScreen({navigation}) {
   const [data, setData] = useState<any>([]);
 
-  const fetchUser = async () => {
-    const baseUrl = 'https://api.coincap.io/v2/';
-    const url = `${baseUrl}assets`;
-    const response: any = await axios.get(url).catch(e => console.log(e));
+  const fetchData = async () => {
+    const response: any = await fetchAssets();
     await setData(response.data.data);
   };
 
   useEffect(() => {
-    fetchUser();
+    fetchData();
   }, []);
 
   const ListItem = ({item}) => (

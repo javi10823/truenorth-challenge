@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Button, Card} from '../components/ui';
+import {fetchAsset} from '../api';
 
 /**
  * ToDo: Feed the list using fetching data from a RESTful API
@@ -18,15 +18,13 @@ const ListScreen = ({navigation, route}) => {
   const [data, setData] = useState<any>();
   const {id} = route.params;
 
-  const fetchUser = async () => {
-    const baseUrl = 'https://api.coincap.io/v2/';
-    const url = `${baseUrl}assets/${id}`;
-    const response: any = await axios.get(url).catch(e => console.log(e));
+  const getData = async () => {
+    const response: any = await fetchAsset(id);
     await setData(response.data.data);
   };
 
   useEffect(() => {
-    fetchUser();
+    getData();
   }, []);
 
   return (
