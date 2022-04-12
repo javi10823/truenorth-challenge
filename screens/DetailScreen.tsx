@@ -4,13 +4,6 @@ import {Button, Card} from '../components/ui';
 import {fetchAsset} from '../api';
 
 /**
- * ToDo: Feed the list using fetching data from a RESTful API
- *
- * API: COINCAP API 2.0
- * API Docs: https://api.coincap.io/v2/assets/{id}
- * API Example: https://docs.coincap.io/#f8869879-171f-4240-adfd-dd2947506adc
- *
- * 💯 Using axios great plus
  * 💯 Handle loading and error scenarios, always
  */
 

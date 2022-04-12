@@ -6,7 +6,7 @@ export const fetchAssets = async () => {
   return await axios.get(url).catch(e => console.log(e));
 };
 
-export const fetchAsset = async ({id}: {id: number}) => {
+export const fetchAsset = async (id: number) => {
   const url = `${baseUrl}assets/${id}`;
   return await axios.get(url).catch(e => console.log(e));
 };

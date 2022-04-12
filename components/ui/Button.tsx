@@ -15,6 +15,7 @@ interface Props {
   containerStyle?: StyleProp<ViewStyle>;
   buttonStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
 }
 
 const Button: FC<Props> = ({
@@ -23,9 +24,17 @@ const Button: FC<Props> = ({
   containerStyle,
   buttonStyle,
   textStyle,
+  disabled,
 }) => (
-  <View style={[styles.container, containerStyle]}>
-    <TouchableOpacity style={[styles.button, buttonStyle]} onPress={onPress}>
+  <View
+    style={[
+      disabled ? styles.disabledContainer : styles.container,
+      containerStyle,
+    ]}>
+    <TouchableOpacity
+      disabled={disabled}
+      style={[styles.button, buttonStyle]}
+      onPress={onPress}>
       <Text style={[styles.text, textStyle]}>{text}</Text>
     </TouchableOpacity>
   </View>
@@ -45,6 +54,10 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
+  },
+  disabledContainer: {
+    width: '100%',
+    opacity: 0.5,
   },
 });
 
