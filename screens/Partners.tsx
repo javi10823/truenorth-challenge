@@ -1,8 +1,14 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 
+type Partner = {
+  name: string;
+  url: string;
+  comments: string;
+};
+
 const Partners = () => {
-  const partnerList = [
+  const partnerList: Partner[] = [
     {
       name: 'App1',
       url: '#',
@@ -20,7 +26,7 @@ const Partners = () => {
     },
   ];
 
-  const ListItem = ({item}) => (
+  const ListItem = ({item}: {item: Partner}) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemName}>{item.name}</Text>
       <Text style={styles.comments}>{item.comments}</Text>

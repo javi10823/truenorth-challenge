@@ -1,30 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
   View,
-  TouchableWithoutFeedback,
   ActivityIndicator,
   FlatList,
 } from 'react-native';
 import {fetchAssets} from '../api';
+import {Asset} from '../api/types';
+import {Card} from '../components/ui';
 
-/**
- * ToDo: Feed the list using fetching data from a RESTful API
- *
- * API: COINCAP API 2.0
- * API Docs: https://api.coincap.io/v2/assets
- * API Example: https://docs.coincap.io/#89deffa0-ab03-4e0a-8d92-637a857d2c91
- *
- * 💯 Using axios great plus
- * 💯 Handle loading and error scenarios, always
- */
+interface Props {
+  navigation: any;
+}
 
-export default function ListScreen({navigation}) {
-  const [data, setData] = useState<any>([]);
+const ListScreen: FC<Props> = ({navigation}) => {
+  const [data, setData] = useState<Asset[]>([]);
+  const [error, setError] = useState('');
 
   const fetchData = async () => {
-    const response: any = await fetchAssets();
+    const response = await fetchAssets();
+    if (response.message) {
+      return setError(response.message);
+    }
     await setData(response.data.data);
   };
 
@@ -32,66 +30,23 @@ export default function ListScreen({navigation}) {
     fetchData();
   }, []);
 
-  const ListItem = ({item}) => (
-    <View
-      style={[
-        styles.itemContainer,
-        {
-          marginVertical: 10,
-        },
-      ]}>
-      <TouchableWithoutFeedback
-        onPress={navigation.navigate.bind(null, 'Detail', {id: item.id})}>
-        <View>
-          <View style={styles.nameRow}>
-            <Text style={styles.symbol}>
-              {item.symbol} - <Text style={styles.name}>{item.name}</Text>
-            </Text>
-            <Text style={styles.rank}>#{item.rank}</Text>
-          </View>
-          <View style={styles.priceRow}>
-            {/* 💯  In this execercise you can round numbers without a library */}
-            <Text style={styles.price}>
-              $ {Number(item.priceUsd).toFixed(2)}{' '}
-              <Text style={styles.currency}>USD</Text>
-            </Text>
-            <View
-              style={[
-                styles.percentChangeCell,
-                {
-                  backgroundColor:
-                    Number(item.changePercent24Hr) < 0 ? '#FDDCDC' : '#D1FAE5',
-                },
-              ]}>
-              <Text
-                style={[
-                  styles.percent,
-                  {
-                    color:
-                      Number(item.changePercent24Hr) < 0
-                        ? '#A50606'
-                        : '#065F46',
-                  },
-                ]}>
-                {Number(item.changePercent24Hr) < 0
-                  ? -Number(item.changePercent24Hr).toFixed(2)
-                  : Number(item.changePercent24Hr).toFixed(2)}
-                %
-              </Text>
-            </View>
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
+  const ListItem = ({item}: {item: Asset}) => (
+    <Card
+      item={item}
+      containerStyle={styles.cardContainer}
+      onPress={navigation.navigate.bind(null, 'Detail', {id: item.id})}
+    />
   );
+
+  if (error) {
+    return <Text style={styles.errorMessage}>{error}</Text>;
+  }
 
   return (
     <View style={styles.container}>
       {data && data.length > 0 ? (
         <FlatList
-          style={{
-            paddingHorizontal: 30,
-          }}
+          style={styles.list}
           data={data}
           keyExtractor={({id}) => id}
           renderItem={({item}) => <ListItem key={item.id} item={item} />}
@@ -101,71 +56,26 @@ export default function ListScreen({navigation}) {
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 14,
   },
-  itemContainer: {
-    display: 'flex',
-    backgroundColor: '#fff',
-    paddingTop: 20,
-    paddingBottom: 18,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-  },
-  nameRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  symbol: {
-    fontWeight: '700',
-    fontSize: 18,
-    color: '#0A132C',
-  },
-  name: {
-    fontWeight: '400',
-    fontSize: 16,
-    color: '#0A132C',
-  },
-  rank: {
-    fontWeight: '500',
-    fontSize: 14,
-    color: '#6B7280',
-    paddingRight: 13,
-  },
-  priceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    marginTop: 13,
-  },
-  price: {
-    color: '#019FB5',
-    fontSize: 24,
-    lineHeight: 32,
-    fontWeight: '600',
-  },
-  currency: {
-    fontWeight: '500',
-    fontSize: 14,
-    color: '#6B7280',
-  },
-  percentChangeCell: {
-    borderRadius: 12,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft: 15,
-    paddingRight: 10,
-  },
-  percent: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
   loading: {
     alignSelf: 'center',
   },
+  errorMessage: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+    padding: 24,
+  },
+  cardContainer: {marginVertical: 10},
+  list: {
+    paddingHorizontal: 30,
+  },
 });
+
+export default ListScreen;

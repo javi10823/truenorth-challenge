@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingTop: 172,
+    paddingTop: '44%',
   },
   title: {
     fontSize: 24,
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     color: '#0A132C',
   },
   illustration: {
-    width: 354,
-    height: 139,
+    width: '91%',
+    height: '28%',
   },
 });
 

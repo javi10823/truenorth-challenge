@@ -1,24 +1,34 @@
-import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState, FC} from 'react';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
 import {Button, Card} from '../components/ui';
 import {fetchAsset} from '../api';
+import {Asset} from '../api/types';
 
-/**
- * 💯 Handle loading and error scenarios, always
- */
+interface Props {
+  navigation: any;
+  route: any;
+}
 
-const ListScreen = ({navigation, route}) => {
-  const [data, setData] = useState<any>();
+const ListScreen: FC<Props> = ({navigation, route}) => {
+  const [data, setData] = useState<Asset>();
+  const [error, setError] = useState('');
   const {id} = route.params;
 
   const getData = async () => {
-    const response: any = await fetchAsset(id);
+    const response = await fetchAsset(id);
+    if (response.message) {
+      return setError(response.message);
+    }
     await setData(response.data.data);
   };
 
   useEffect(() => {
     getData();
   }, []);
+
+  if (error) {
+    return <Text style={styles.errorMessage}>{error}</Text>;
+  }
 
   return (
     <View style={styles.container}>
@@ -50,6 +60,12 @@ const styles = StyleSheet.create({
   },
   loading: {
     alignSelf: 'center',
+  },
+  errorMessage: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+    padding: 24,
   },
 });
 

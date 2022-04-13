@@ -1,14 +1,22 @@
 import React, {FC} from 'react';
-import {Text, TouchableWithoutFeedback, View, StyleSheet} from 'react-native';
+import {
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 
 interface Props {
   item: any;
   onPress?: () => void;
   detail?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
-const Card: FC<Props> = ({item, onPress, detail}) => (
-  <View style={styles.itemContainer}>
+const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => (
+  <View style={[styles.itemContainer, containerStyle]}>
     <TouchableWithoutFeedback onPress={onPress}>
       <View>
         <View style={styles.nameRow}>
@@ -18,7 +26,6 @@ const Card: FC<Props> = ({item, onPress, detail}) => (
           <Text style={styles.rank}>#{item.rank}</Text>
         </View>
         <View style={styles.priceRow}>
-          {/* 💯  In this execercise you can round numbers without a library */}
           <Text style={styles.price}>
             $ {Number(item.priceUsd).toFixed(2)}{' '}
             <Text style={styles.currency}>USD</Text>

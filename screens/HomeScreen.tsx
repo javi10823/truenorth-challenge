@@ -1,11 +1,15 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {FC, useContext, useMemo, useState} from 'react';
 import {Alert, StyleSheet, Text, TextInput, View} from 'react-native';
 import {Button} from '../components/ui';
 import mockUsers from '../config/users.json';
 import md5 from 'md5';
 import {UserContext} from '../store/userContext';
 
-const HomeScreen = ({navigation}) => {
+interface Props {
+  navigation: any;
+}
+
+const HomeScreen: FC<Props> = ({navigation}) => {
   const [userName, setUserName] = useState('');
   const [userPass, setUserPass] = useState('');
 
@@ -15,6 +19,7 @@ const HomeScreen = ({navigation}) => {
     const user = mockUsers.find(
       ({name, pass}) => userName === name && md5(userPass) === pass,
     );
+    navigation.navigate('List');
 
     if (user) {
       await setUserContext({name: userName, pass: userPass});
@@ -22,7 +27,7 @@ const HomeScreen = ({navigation}) => {
       await setUserPass('');
       navigation.navigate('List');
     } else {
-      Alert.alert('Incorrect credentials, please try again');
+      Alert.alert('Incorrect credentials. Please try again');
     }
   };
 
@@ -53,7 +58,7 @@ const HomeScreen = ({navigation}) => {
       />
       <Button
         text="Sign in"
-        disabled={!isValid}
+        disabled={isValid}
         containerStyle={styles.buttonContainer}
         onPress={onSingIn}
       />
