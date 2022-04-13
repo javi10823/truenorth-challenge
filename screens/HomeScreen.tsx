@@ -4,6 +4,7 @@ import {Button} from '../components/ui';
 import mockUsers from '../config/users.json';
 import md5 from 'md5';
 import {UserContext} from '../store/userContext';
+import {colors, globalStyles} from '../styles';
 
 interface Props {
   navigation: any;
@@ -42,7 +43,7 @@ const HomeScreen: FC<Props> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.title, {marginBottom: 44}]}>Welcome</Text>
+      <Text style={styles.title}>Welcome</Text>
       <TextInput
         onChangeText={setUserName}
         style={styles.textInput}
@@ -69,15 +70,10 @@ const HomeScreen: FC<Props> = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingHorizontal: 35,
     paddingTop: '32%',
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0A132C',
   },
   textInput: {
     height: 40,
@@ -85,12 +81,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     paddingHorizontal: 9,
-    borderColor: '#D1D5DB',
+    borderColor: colors.inputGray,
     fontSize: 16,
     marginBottom: 16,
   },
   buttonContainer: {
     marginTop: 44,
+  },
+  title: {
+    ...globalStyles.title,
+    marginBottom: 44,
   },
 });
 

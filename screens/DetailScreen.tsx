@@ -1,8 +1,9 @@
 import React, {useEffect, useState, FC} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {Button, Card} from '../components/ui';
+import {StyleSheet, Text, View} from 'react-native';
+import {Button, Card, Spinner} from '../components/ui';
 import {fetchAsset} from '../api';
 import {Asset} from '../api/types';
+import {colors, globalStyles} from '../styles';
 
 interface Props {
   navigation: any;
@@ -27,7 +28,7 @@ const ListScreen: FC<Props> = ({navigation, route}) => {
   }, []);
 
   if (error) {
-    return <Text style={styles.errorMessage}>{error}</Text>;
+    return <Text style={globalStyles.errorMessage}>{error}</Text>;
   }
 
   return (
@@ -42,7 +43,7 @@ const ListScreen: FC<Props> = ({navigation, route}) => {
           />
         </>
       ) : (
-        <ActivityIndicator style={styles.loading} />
+        <Spinner />
       )}
     </View>
   );
@@ -51,21 +52,12 @@ const ListScreen: FC<Props> = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F8FA',
+    backgroundColor: colors.backgroundGray,
     paddingHorizontal: 35,
     paddingTop: 24,
   },
   buttonStyle: {
     marginTop: 24,
-  },
-  loading: {
-    alignSelf: 'center',
-  },
-  errorMessage: {
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '700',
-    padding: 24,
   },
 });
 

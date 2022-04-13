@@ -8,6 +8,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import {colors} from '../../styles';
 
 interface Props {
   text: string;
@@ -42,7 +43,7 @@ const Button: FC<Props> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#1FC4DB',
+    backgroundColor: colors.turquoise,
     alignItems: 'center',
     paddingVertical: 9,
     borderRadius: 6,

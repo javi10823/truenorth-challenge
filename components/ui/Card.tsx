@@ -7,6 +7,7 @@ import {
   StyleProp,
   ViewStyle,
 } from 'react-native';
+import {colors, globalStyles} from '../../styles';
 
 interface Props {
   item: any;
@@ -35,7 +36,9 @@ const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => (
               styles.percentChangeCell,
               {
                 backgroundColor:
-                  Number(item.changePercent24Hr) < 0 ? '#FDDCDC' : '#D1FAE5',
+                  Number(item.changePercent24Hr) < 0
+                    ? colors.lightRed
+                    : colors.lightGreen,
               },
             ]}>
             <Text
@@ -43,7 +46,9 @@ const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => (
                 styles.percent,
                 {
                   color:
-                    Number(item.changePercent24Hr) < 0 ? '#A50606' : '#065F46',
+                    Number(item.changePercent24Hr) < 0
+                      ? colors.strongRed
+                      : colors.green,
                 },
               ]}>
               {Number(item.changePercent24Hr) < 0
@@ -57,19 +62,19 @@ const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => (
           <View style={{marginTop: 6}}>
             <Text style={styles.detailText}>
               Supply{' '}
-              <Text style={styles.detailValue}>
+              <Text style={globalStyles.text}>
                 {Number(item.supply).toFixed(2)}
               </Text>
             </Text>
             <Text style={styles.detailText}>
               Max Supply{' '}
-              <Text style={styles.detailValue}>
+              <Text style={globalStyles.text}>
                 {Number(item.maxSupply).toFixed(2)}
               </Text>
             </Text>
             <Text style={styles.detailText}>
               Market Cap ${' '}
-              <Text style={styles.detailValue}>
+              <Text style={globalStyles.text}>
                 {Number(item.marketCapUsd).toFixed(2)}{' '}
                 <Text style={styles.currency}>USD</Text>
               </Text>
@@ -84,7 +89,7 @@ const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => (
 const styles = StyleSheet.create({
   itemContainer: {
     display: 'flex',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     paddingTop: 20,
     paddingBottom: 18,
     paddingHorizontal: 16,
@@ -97,17 +102,17 @@ const styles = StyleSheet.create({
   symbol: {
     fontWeight: '700',
     fontSize: 18,
-    color: '#0A132C',
+    color: colors.black,
   },
   name: {
     fontWeight: '400',
     fontSize: 16,
-    color: '#0A132C',
+    color: colors.black,
   },
   rank: {
     fontWeight: '500',
     fontSize: 14,
-    color: '#6B7280',
+    color: colors.gray,
     paddingRight: 13,
   },
   priceRow: {
@@ -117,7 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
   price: {
-    color: '#019FB5',
+    color: colors.turquoise,
     fontSize: 24,
     lineHeight: 32,
     fontWeight: '600',
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
   currency: {
     fontWeight: '500',
     fontSize: 14,
-    color: '#6B7280',
+    color: colors.gray,
   },
   percentChangeCell: {
     borderRadius: 12,
@@ -143,11 +148,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     fontSize: 14,
     fontWeight: '500',
-    color: '#0A132C',
-  },
-  detailValue: {
-    fontWeight: '400',
-    fontSize: 16,
+    color: colors.black,
   },
 });
 

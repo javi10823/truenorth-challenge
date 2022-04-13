@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from '../components/ui';
+import {colors, globalStyles} from '../styles';
 
 interface Props {
   navigation: any;
@@ -31,7 +32,7 @@ const ToDoScreen: FC<Props> = ({navigation}) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     alignItems: 'center',
     paddingHorizontal: 30,
     paddingTop: '25.5%',
@@ -41,15 +42,13 @@ const styles = StyleSheet.create({
     height: 194,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0A132C',
+    ...globalStyles.title,
     marginVertical: 24,
   },
   text: {
     fontSize: 14,
     textAlign: 'center',
-    color: '#0A132C',
+    color: colors.black,
     lineHeight: 19,
   },
   buttonContainer: {

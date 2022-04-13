@@ -1,14 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  FlatList,
-} from 'react-native';
+import {StyleSheet, Text, View, FlatList} from 'react-native';
 import {fetchAssets} from '../api';
 import {Asset} from '../api/types';
-import {Card} from '../components/ui';
+import {Card, Spinner} from '../components/ui';
+import {globalStyles} from '../styles';
 
 interface Props {
   navigation: any;
@@ -39,7 +34,7 @@ const ListScreen: FC<Props> = ({navigation}) => {
   );
 
   if (error) {
-    return <Text style={styles.errorMessage}>{error}</Text>;
+    return <Text style={globalStyles.errorMessage}>{error}</Text>;
   }
 
   return (
@@ -52,7 +47,7 @@ const ListScreen: FC<Props> = ({navigation}) => {
           renderItem={({item}) => <ListItem key={item.id} item={item} />}
         />
       ) : (
-        <ActivityIndicator style={styles.loading} />
+        <Spinner />
       )}
     </View>
   );
@@ -63,16 +58,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 14,
   },
-  loading: {
-    alignSelf: 'center',
+  cardContainer: {
+    marginVertical: 10,
   },
-  errorMessage: {
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '700',
-    padding: 24,
-  },
-  cardContainer: {marginVertical: 10},
   list: {
     paddingHorizontal: 30,
   },

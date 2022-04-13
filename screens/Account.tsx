@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {StyleSheet, View, Image, Text} from 'react-native';
 import {UserContext} from '../store/userContext';
+import {colors, globalStyles} from '../styles';
 
 const Account = () => {
   const {
@@ -25,19 +26,18 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     alignItems: 'center',
     paddingTop: '44%',
   },
   title: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...globalStyles.title,
     marginBottom: 24,
   },
   subtitle: {
     fontSize: 14,
     textAlign: 'center',
-    color: '#0A132C',
+    color: colors.black,
   },
   illustration: {
     width: '91%',
