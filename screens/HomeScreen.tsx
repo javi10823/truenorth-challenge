@@ -20,12 +20,12 @@ const HomeScreen: FC<Props> = ({navigation}) => {
     const user = mockUsers.find(
       ({name, pass}) => userName === name && md5(userPass) === pass,
     );
-    navigation.navigate('List');
 
     if (user) {
       await setUserContext({name: userName, pass: userPass});
       await setUserName('');
       await setUserPass('');
+      navigation.navigate('List');
     } else {
       Alert.alert('Incorrect credentials. Please try again');
     }

@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from '../components/ui';
 import {colors, globalStyles} from '../styles';
-import homeIlustration from 'home-illustration.png';
+import homeIlustration from '../assets/home-illustration.png';
 
 interface Props {
   navigation: any;
