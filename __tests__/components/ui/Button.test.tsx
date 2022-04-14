@@ -1,8 +1,6 @@
 import 'react-native';
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
-
-// Note: test renderer must be required after react-native.
 import {Button} from '../../../components/ui';
 
 const TEST_TEXT = 'Test button text';

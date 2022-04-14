@@ -26,7 +26,6 @@ const HomeScreen: FC<Props> = ({navigation}) => {
       await setUserContext({name: userName, pass: userPass});
       await setUserName('');
       await setUserPass('');
-      navigation.navigate('List');
     } else {
       Alert.alert('Incorrect credentials. Please try again');
     }
@@ -59,7 +58,7 @@ const HomeScreen: FC<Props> = ({navigation}) => {
       />
       <Button
         text="Sign in"
-        disabled={isValid}
+        disabled={!isValid}
         containerStyle={styles.buttonContainer}
         onPress={onSingIn}
       />

@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from '../components/ui';
 import {colors, globalStyles} from '../styles';
+import homeIlustration from 'home-illustration.png';
 
 interface Props {
   navigation: any;
@@ -9,10 +10,7 @@ interface Props {
 
 const ToDoScreen: FC<Props> = ({navigation}) => (
   <View style={styles.container}>
-    <Image
-      style={styles.illustration}
-      source={require('../assets/home-illustration.png')}
-    />
+    <Image style={styles.illustration} source={homeIlustration} />
     <Text style={styles.title}>Howdy partner!</Text>
     <Text style={styles.text}>This is your assignment.</Text>
     <Text style={styles.text}>

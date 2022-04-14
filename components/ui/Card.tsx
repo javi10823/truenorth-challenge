@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useMemo} from 'react';
 import {
   Text,
   TouchableWithoutFeedback,
@@ -6,8 +6,11 @@ import {
   StyleSheet,
   StyleProp,
   ViewStyle,
+  Image,
 } from 'react-native';
 import {colors, globalStyles} from '../../styles';
+import arrowDown from '../../assets/arrowDown.png';
+import arrowUp from '../../assets/arrowUp.png';
 
 interface Props {
   item: any;
@@ -16,75 +19,79 @@ interface Props {
   containerStyle?: StyleProp<ViewStyle>;
 }
 
-const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => (
-  <View style={[styles.itemContainer, containerStyle]}>
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View>
-        <View style={styles.nameRow}>
-          <Text style={styles.symbol}>
-            {item.symbol} <Text style={styles.name}>- {item.name}</Text>
-          </Text>
-          <Text style={styles.rank}>#{item.rank}</Text>
-        </View>
-        <View style={styles.priceRow}>
-          <Text style={styles.price}>
-            $ {Number(item.priceUsd).toFixed(2)}{' '}
-            <Text style={styles.currency}>USD</Text>
-          </Text>
-          <View
-            style={[
-              styles.percentChangeCell,
-              {
-                backgroundColor:
-                  Number(item.changePercent24Hr) < 0
+const Card: FC<Props> = ({item, onPress, detail, containerStyle = {}}) => {
+  const isNegative = useMemo(() => Number(item.changePercent24Hr) < 0, [item]);
+
+  return (
+    <View style={[styles.itemContainer, containerStyle]}>
+      <TouchableWithoutFeedback onPress={onPress}>
+        <View>
+          <View style={styles.nameRow}>
+            <Text style={styles.symbol}>
+              {item.symbol} <Text style={styles.name}>- {item.name}</Text>
+            </Text>
+            <Text style={styles.rank}>#{item.rank}</Text>
+          </View>
+          <View style={styles.priceRow}>
+            <Text style={styles.price}>
+              $ {Number(item.priceUsd).toFixed(2)}{' '}
+              <Text style={styles.currency}>USD</Text>
+            </Text>
+            <View
+              style={[
+                styles.percentChangeCell,
+                {
+                  backgroundColor: isNegative
                     ? colors.lightRed
                     : colors.lightGreen,
-              },
-            ]}>
-            <Text
-              style={[
-                styles.percent,
-                {
-                  color:
-                    Number(item.changePercent24Hr) < 0
-                      ? colors.strongRed
-                      : colors.green,
                 },
               ]}>
-              {Number(item.changePercent24Hr) < 0
-                ? -Number(item.changePercent24Hr).toFixed(2)
-                : Number(item.changePercent24Hr).toFixed(2)}
-              %
-            </Text>
+              <Image
+                source={isNegative ? arrowDown : arrowUp}
+                style={styles.arrow}
+              />
+              <Text
+                style={[
+                  styles.percent,
+                  {
+                    color: isNegative ? colors.strongRed : colors.green,
+                  },
+                ]}>
+                {Number(item.changePercent24Hr) < 0
+                  ? -Number(item.changePercent24Hr).toFixed(2)
+                  : Number(item.changePercent24Hr).toFixed(2)}
+                %
+              </Text>
+            </View>
           </View>
+          {detail && (
+            <View style={styles.detailContainer}>
+              <Text style={styles.detailText}>
+                Supply{' '}
+                <Text style={globalStyles.text}>
+                  {Number(item.supply).toFixed(2)}
+                </Text>
+              </Text>
+              <Text style={styles.detailText}>
+                Max Supply{' '}
+                <Text style={globalStyles.text}>
+                  {Number(item.maxSupply).toFixed(2)}
+                </Text>
+              </Text>
+              <Text style={styles.detailText}>
+                Market Cap ${' '}
+                <Text style={globalStyles.text}>
+                  {Number(item.marketCapUsd).toFixed(2)}{' '}
+                  <Text style={styles.currency}>USD</Text>
+                </Text>
+              </Text>
+            </View>
+          )}
         </View>
-        {detail && (
-          <View style={{marginTop: 6}}>
-            <Text style={styles.detailText}>
-              Supply{' '}
-              <Text style={globalStyles.text}>
-                {Number(item.supply).toFixed(2)}
-              </Text>
-            </Text>
-            <Text style={styles.detailText}>
-              Max Supply{' '}
-              <Text style={globalStyles.text}>
-                {Number(item.maxSupply).toFixed(2)}
-              </Text>
-            </Text>
-            <Text style={styles.detailText}>
-              Market Cap ${' '}
-              <Text style={globalStyles.text}>
-                {Number(item.marketCapUsd).toFixed(2)}{' '}
-                <Text style={styles.currency}>USD</Text>
-              </Text>
-            </Text>
-          </View>
-        )}
-      </View>
-    </TouchableWithoutFeedback>
-  </View>
-);
+      </TouchableWithoutFeedback>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   itemContainer: {
@@ -135,6 +142,7 @@ const styles = StyleSheet.create({
   percentChangeCell: {
     borderRadius: 12,
     height: 24,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingLeft: 15,
@@ -149,6 +157,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     color: colors.black,
+  },
+  arrow: {
+    width: 10,
+    height: 12,
+    marginRight: 5,
+  },
+  detailContainer: {
+    marginTop: 6,
   },
 });
 

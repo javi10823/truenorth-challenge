@@ -9,7 +9,7 @@ const TestItem = {
   priceUsd: '4353',
   changePercent24Hr: '4',
   name: 'Ethereum',
-  supply: '1000000000',
+  supply: 1000000000,
   maxSupply: '1000000000000',
   marketCapUsd: '4236000000000000',
 };
@@ -17,14 +17,25 @@ const TestItem = {
 it('renders correctly', () => {
   const {getByText} = render(<Card item={TestItem} />);
   expect(getByText(new RegExp(TestItem.symbol))).toBeDefined();
-  expect(getByText(new RegExp(TestItem.rank))).toBeDefined();
+  expect(getByText(`#${TestItem.rank}`)).toBeDefined();
   expect(getByText(new RegExp(TestItem.name))).toBeDefined();
   expect(getByText(new RegExp(TestItem.priceUsd))).toBeDefined();
 });
 
+it('renders details correctly', () => {
+  const {getByText} = render(<Card detail item={TestItem} />);
+  expect(getByText(new RegExp(TestItem.symbol))).toBeDefined();
+  expect(getByText(`#${TestItem.rank}`)).toBeDefined();
+  expect(getByText(new RegExp(TestItem.name))).toBeDefined();
+  expect(getByText(new RegExp(TestItem.priceUsd))).toBeDefined();
+  expect(getByText(TestItem.supply.toFixed(2))).toBeDefined();
+  expect(getByText(new RegExp(TestItem.maxSupply))).toBeDefined();
+  expect(getByText(new RegExp(TestItem.marketCapUsd))).toBeDefined();
+});
+
 it('should execute press event', () => {
   const onPress = jest.fn();
-  const {getByText} = render(<Card item={TestItem} onPress={onPress} />);
+  const {getByText} = render(<Card detail item={TestItem} onPress={onPress} />);
   expect(getByText(new RegExp(TestItem.name))).toBeDefined();
   fireEvent(getByText(new RegExp(TestItem.name)), 'press');
   expect(onPress).toBeCalledTimes(1);

@@ -11,19 +11,22 @@ type Partner = {
 const Partners = () => {
   const partnerList: Partner[] = [
     {
-      name: 'App1',
-      url: '#',
-      comments: 'Description of the application and what you did.',
+      name: 'Cattler',
+      url: 'https://www.cattler.farm/',
+      comments:
+        'Cattler is a mobile & desktop software platform that allow the cattle farmer to run all its operation in one place. I worked on the mobile frontend section of the app, developing the application for tablets',
     },
     {
-      name: 'App2',
-      url: '#',
-      comments: 'Description of the application and what you did.',
+      name: '11Fifty',
+      url: 'https://11fifty.ai/',
+      comments:
+        'An application for managing savings, retirement, pensions, etc. from South Africa. I Worked on the frontend, implementing new ui, fixing design bugs, and critical code bugs.',
     },
     {
-      name: 'App3',
-      url: '#',
-      comments: 'Description of the application and what you did.',
+      name: 'Splitpass',
+      url: 'https://www.splitpass.com/',
+      comments:
+        'SplitPass is a marketplace to buy & sell unused memberships, packages and subscriptions. I worked on the entire frontend section of the app.',
     },
   ];
 
@@ -40,7 +43,7 @@ const Partners = () => {
   return (
     <View style={styles.profileContainer}>
       <Text style={styles.title}>Partners</Text>
-      <Text style={styles.text}>Here are some apps I was involved in:</Text>
+      <Text style={styles.comments}>Here are some apps I was involved in:</Text>
       {partnerList && partnerList.length > 0 ? (
         <FlatList
           data={partnerList}
@@ -74,6 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   text: {
+    ...globalStyles.text,
     fontSize: 16,
     color: colors.black,
   },
